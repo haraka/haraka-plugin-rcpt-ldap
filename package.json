@@ -1,33 +1,36 @@
 {
-  "name": "haraka-plugin-template",
+  "name": "haraka-plugin-rcpt-ldap",
   "version": "1.0.0",
-  "description": "Haraka plugin that frobnicates email connections",
+  "description": "Haraka plugin that validates recipients against an LDAP server",
   "main": "index.js",
   "scripts": {
     "lint": "./node_modules/.bin/eslint *.js test/**/*.js",
     "lintfix": "./node_modules/.bin/eslint --fix *.js test/**/*.js",
-    "cover": "./node_modules/.bin/istanbul cover ./node_modules/.bin/_mocha",
-    "test": "./node_modules/.bin/_mocha"
+    "cover": "./node_modules/.bin/istanbul cover ./run_tests",
+    "test": "node ./run_tests"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/haraka/haraka-plugin-template.git"
+    "url": "git+https://github.com/haraka/haraka-plugin-rcpt-ldap.git"
   },
   "keywords": [
     "haraka",
     "plugin",
-    "template"
+    "rcpt-ldap"
   ],
-  "author": "Welcome Member <happy-haraka-hacker@example.com>",
+  "author": "Haraka Team <haraka.mail@gmail.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/haraka/haraka-plugin-template/issues"
+    "url": "https://github.com/haraka/haraka-plugin-rcpt-ldap/issues"
   },
-  "homepage": "https://github.com/haraka/haraka-plugin-template#readme",
+  "homepage": "https://github.com/haraka/haraka-plugin-rcpt-ldap#readme",
   "devDependencies": {
     "eslint": ">=3",
     "eslint-plugin-haraka": "*",
     "haraka-test-fixtures": "*",
-    "mocha": "*"
+    "nodeunit": "*"
+  },
+  "dependencies": {
+    "ldapjs": "^1.0.1"
   }
 }
