@@ -10,26 +10,26 @@ const fixtures = require('haraka-test-fixtures');
 //    mocha: http://mochajs.org
 
 beforeEach(function (done) {
-    this.plugin = new fixtures.plugin('template');
+    this.plugin = new fixtures.plugin('rcpt_to.ldap');
     done();  // if a test hangs, assure you called done()
 });
 
-describe('template', function () {
+describe('rcpt_to.ldap', function () {
     it('loads', function (done) {
         assert.ok(this.plugin);
         done();
     });
 });
 
-describe('load_template_ini', function () {
-    it('loads template.ini from config/template.ini', function (done) {
-        this.plugin.load_template_ini();
+describe('load_rcpt_to.ldap_ini', function () {
+    it('loads rcpt_to.ldap.ini from config/rcpt_to.ldap.ini', function (done) {
+        this.plugin.load_rcpt_to.ldap_ini();
         assert.ok(this.plugin.cfg);
         done();
     });
 
     it('initializes enabled boolean', function (done) {
-        this.plugin.load_template_ini();
+        this.plugin.load_rcpt_to.ldap_ini();
         assert.equal(this.plugin.cfg.main.enabled, true, this.plugin.cfg);
         done();
     });

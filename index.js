@@ -2,13 +2,13 @@
 
 exports.register = function () {
     const plugin = this;
-    plugin.load_template_ini();
+    plugin.load_rcpt_to.ldap_ini();
 }
 
-exports.load_template_ini = function () {
+exports.load_rcpt_to.ldap_ini = function () {
     const plugin = this;
 
-    plugin.cfg = plugin.config.get('template.ini', {
+    plugin.cfg = plugin.config.get('rcpt_to.ldap.ini', {
         booleans: [
             '+enabled',               // plugins.cfg.main.enabled=true
             '-disabled',              // plugins.cfg.main.disabled=false
