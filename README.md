@@ -1,8 +1,8 @@
 [![Build Status][ci-img]][ci-url]
+[![Windows Build Status][ci-win-img]][ci-win-url]
 [![Code Climate][clim-img]][clim-url]
 [![Greenkeeper badge][gk-img]][gk-url]
 [![NPM][npm-img]][npm-url]
-[![Windows Build Status][ci-win-img]][ci-win-url]
 
 # haraka-plugin-rcpt-ldap
 
@@ -26,8 +26,8 @@ The logic that is followed is:
 <!-- leave these buried at the bottom of the document -->
 [ci-img]: https://travis-ci.org/haraka/haraka-plugin-rcpt-ldap.svg
 [ci-url]: https://travis-ci.org/haraka/haraka-plugin-rcpt-ldap
-[ci-win-img]: https://ci.appveyor.com/api/projects/status/CHANGETHIS?svg=true
-[ci-win-url]: https://ci.appveyor.com/project/haraka/haraka-CHANGETHIS
+[ci-win-img]: https://ci.appveyor.com/api/projects/status/nqbiggwh5v1bilfu?svg=true
+[ci-win-url]: https://ci.appveyor.com/project/msimerson/haraka-plugin-rcpt-ldap
 [cov-img]: https://codecov.io/github/haraka/haraka-plugin-rcpt-ldap/coverage.svg
 [cov-url]: https://codecov.io/github/haraka/haraka-plugin-rcpt-ldap
 [clim-img]: https://codeclimate.com/github/haraka/haraka-plugin-rcpt-ldap/badges/gpa.svg
