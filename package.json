@@ -1,6 +1,6 @@
 {
   "name": "haraka-plugin-rcpt-ldap",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Haraka plugin that validates recipients against an LDAP server",
   "main": "index.js",
   "scripts": {
