@@ -1,5 +1,7 @@
 'use strict';
 
+const assert = require('assert')
+
 const Address      = require('address-rfc2821').Address;
 const fixtures     = require('haraka-test-fixtures');
 
@@ -12,7 +14,7 @@ const _set_up = function (done) {
 
     this.plugin.in_host_list = function (domain) {
         const plugin = this;
-        plugin.logdebug("checking " + domain + " in config/host_list");
+        plugin.logdebug(`checking ${  domain  } in config/host_list`);
         if (plugin.host_list[domain]) {
             return true;
         }
@@ -26,81 +28,79 @@ const _set_up = function (done) {
         results: new fixtures.results(this.connection),
         notes: {},
         rcpt_to: [new Address('test@test.com')]
-    };
+    }
 
     done();
-};
+}
 
-exports.in_host_list = {
-    setUp : _set_up,
-    'miss' : function (test) {
-        test.expect(1);
-        test.equal(false, this.plugin.in_host_list('test.com'));
-        test.done();
-    },
-    'hit' : function (test) {
-        test.expect(1);
+describe('in_host_list', function () {
+    beforeEach(_set_up)
+
+    it('miss', function (done) {
+        assert.equal(false, this.plugin.in_host_list('test.com'));
+        done()
+    })
+    it('hit', function (done) {
         this.plugin.host_list['test.com'] = true;
-        test.equal(true, this.plugin.in_host_list('test.com'));
-        test.done();
-    },
-};
+        assert.equal(true, this.plugin.in_host_list('test.com'));
+        done()
+    })
+})
 
-exports.in_ldap_ini = {
-    setUp : _set_up,
-    'miss' : function (test) {
-        test.expect(1);
-        test.equal(false, this.plugin.in_ldap_ini('test.com'));
-        test.done();
-    },
-    'hit' : function (test) {
-        test.expect(1);
+describe('in_ldap_ini', function () {
+    beforeEach(_set_up)
+
+    it('miss', function (done) {
+        assert.equal(false, this.plugin.in_ldap_ini('test.com'));
+        done()
+    })
+    it('hit', function (done) {
         this.plugin.cfg['test.com'] = { server: 'foo.test.com' };
-        test.equal(true, this.plugin.in_ldap_ini('test.com'));
-        test.done();
-    },
-};
+        assert.equal(true, this.plugin.in_ldap_ini('test.com'));
+        done()
+    })
+})
 
-exports.ldap_rcpt = {
-    setUp : _set_up,
-    'missing txn' : function (test) {
-        test.expect(3);
+describe('ldap_rcpt', function () {
+    beforeEach(_set_up)
+
+    it('missing txn', function (done) {
         // sometimes txn goes away, make sure it's handled
         const next = function (rc, msg) {
-            test.equal(undefined, rc);
-            test.equal(undefined, msg);
+            assert.equal(undefined, rc);
+            assert.equal(undefined, msg);
         };
         delete this.connection.transaction;
         this.plugin.ldap_rcpt(next, this.connection, [new Address('test@test.com')]);
-        test.ok(true);
-        test.done();
-    },
-    'not in host_list or rcpt_to.ldap.ini' : function (test) {
-        test.expect(2);
+        assert.ok(true);
+        done()
+    })
+
+    it('not in host_list or rcpt_to.ldap.ini', function (done) {
         const next = function (rc, msg) {
-            test.equal(undefined, rc);
-            test.equal(undefined, msg);
-            test.done();
+            assert.equal(undefined, rc);
+            assert.equal(undefined, msg);
+            done()
         };
         this.plugin.ldap_rcpt(next, this.connection, [new Address('test@test.com')]);
-    },
-    'in host_list' : function (test) {
-        test.expect(1);
+    })
+
+    it('in host_list', function (done) {
         const next = function (rc, msg) {
-            test.equal('connecting', this.connection.transaction.results.get('rcpt-ldap').msg[0]);
-            test.done();
+            assert.equal('connecting', this.connection.transaction.results.get('rcpt-ldap').msg[0]);
+            done()
         }.bind(this);
         this.plugin.host_list = { 'test.com': true };
         this.plugin.ldap_rcpt(next, this.connection, [new Address('test@test.com')]);
-    },
-    'in rcpt_to.ldap.ini' : function (test) {
-        test.expect(1);
+    })
+
+    it('in rcpt_to.ldap.ini', function (done) {
         const next = function (rc, msg) {
-            test.equal('connecting', this.connection.transaction.results.get('rcpt-ldap').msg[0]);
-            test.done();
+            assert.equal('connecting', this.connection.transaction.results.get('rcpt-ldap').msg[0]);
+            done()
         }.bind(this);
         this.plugin.cfg['test.com'] = { server: 'ldap.test.com' };
         this.plugin.ldap_rcpt(next, this.connection, [new Address('test@test.com')]);
-    },
+    })
     // TODO: detect a working LDAP server and test against it
-};
+})

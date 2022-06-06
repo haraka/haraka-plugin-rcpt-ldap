@@ -41,7 +41,7 @@ exports.ldap_rcpt = function (next, connection, params) {
     const domain = rcpt.host.toLowerCase();
 
     if (!plugin.in_host_list(domain) && !plugin.in_ldap_ini(domain)) {
-        connection.logdebug(plugin, "domain '" + domain + "' is not local; skip ldap");
+        connection.logdebug(plugin, `domain '${  domain  }' is not local; skip ldap`);
         return next();
     }
 
@@ -55,47 +55,47 @@ exports.ldap_rcpt = function (next, connection, params) {
 
     const cfg = plugin.cfg[domain] || plugin.cfg.main;
     if (!cfg) {
-        connection.logerror(plugin, 'no LDAP config for ' + domain);
+        connection.logerror(plugin, `no LDAP config for ${  domain}`);
         return next();
     }
 
     let client;
     try { client = plugin.ldap.createClient({ url: cfg.server }); }
     catch (e) {
-        connection.logerror(plugin, 'connect error: ' + e);
+        connection.logerror(plugin, `connect error: ${  e}`);
         return next();
     }
 
     client.on('error', function (err) {
-        connection.loginfo(plugin, 'client error ' + err.message);
+        connection.loginfo(plugin, `client error ${  err.message}`);
         next(DENYSOFT, 'Backend failure. Please, retry later');
     });
 
     client.bind(cfg.binddn, cfg.bindpw, function (err) {
-        connection.logerror(plugin, 'error: ' + err);
+        connection.logerror(plugin, `error: ${  err}`);
     });
 
     const opts = plugin.get_search_opts(cfg, rcpt);
-    connection.logdebug(plugin, "Search filter is: " + util.inspect(opts));
+    connection.logdebug(plugin, `Search filter is: ${  util.inspect(opts)}`);
 
     const search_result = function (err, res) {
         if (err) {
-            connection.logerror(plugin, 'LDAP search error: ' + err);
+            connection.logerror(plugin, `LDAP search error: ${  err}`);
             return next(DENYSOFT, 'Backend failure. Please, retry later');
         }
         const items = [];
         res.on('searchEntry', function (entry) {
-            connection.logdebug(plugin, 'entry: ' + JSON.stringify(entry.object));
+            connection.logdebug(plugin, `entry: ${  JSON.stringify(entry.object)}`);
             items.push(entry.object);
         });
 
         res.on('error', function (err2) { // called for tcp (non-ldap) errors
-            connection.logerror(plugin, 'LDAP search error: ' + err2);
+            connection.logerror(plugin, `LDAP search error: ${  err2}`);
             next(DENYSOFT, 'Backend failure. Please, retry later');
         });
 
         res.on('end', function (result) {
-            connection.logdebug(plugin, 'LDAP search results: ' + items.length + ' -- ' + util.inspect(items));
+            connection.logdebug(plugin, `LDAP search results: ${  items.length  } -- ${  util.inspect(items)}`);
 
             if (items.length) return next();
 
@@ -111,7 +111,7 @@ exports.get_search_opts = function (cfg, rcpt) {
     // JSON.stringify(rcpt.original).replace(/</, '').replace(/>/, '').replace(/"/g, '');
 
     return {
-        filter: '(&(objectClass=' + cfg.objectclass + ')(|(mail=' + plain_rcpt  + ')(mailAlternateAddress=' + plain_rcpt + ')))',
+        filter: `(&(objectClass=${  cfg.objectclass  })(|(mail=${  plain_rcpt   })(mailAlternateAddress=${  plain_rcpt  })))`,
         scope: 'sub',
         attributes: ['dn', 'mail', 'mailAlternateAddress']
     };
