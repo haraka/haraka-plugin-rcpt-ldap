@@ -30,6 +30,6 @@
     "mocha": ">=9"
   },
   "dependencies": {
-    "ldapjs": "^1.0.2"
+    "ldapjs": "^3.0.1"
   }
 }
