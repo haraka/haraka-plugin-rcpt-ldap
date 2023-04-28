@@ -20,4 +20,6 @@
 ### 1.0.0 - 2017-09-__
 
 - initial release
+
+
 [1.1.0]: https://github.com/haraka/haraka-plugin-rcpt-ldap/releases/tag/1.1.0
